@@ -15,35 +15,39 @@ export default async () => {
 
   const app = express();
 
-  // Initialize the database
-  DB.initializeDatabase();
+  try {
+    // Initialize the database
+    DB.initializeDatabase();
 
-  // Make sure the node log entries have timestamps
-  consoleStamp(console, {
-    pattern: 'mm/dd/yyyy HH:MM:ss.l',
-  });
+    // Make sure the node log entries have timestamps
+    consoleStamp(console, {
+      pattern: 'mm/dd/yyyy HH:MM:ss.l',
+    });
 
-  app.get('/', (request: Request, response: Response) =>
-    response.sendStatus(200),
-  );
-  app.get('/health', (request: Request, response: Response) =>
-    response.sendStatus(200),
-  );
+    app.get('/', (request: Request, response: Response) =>
+      response.sendStatus(200),
+    );
+    app.get('/health', (request: Request, response: Response) =>
+      response.sendStatus(200),
+    );
 
-  // Middlewares
-  app.use(cors());
-  app.use(morgan('short'));
-  app.use(express.json());
-  app.use(helmet());
+    // Middlewares
+    app.use(cors());
+    app.use(morgan('short'));
+    app.use(express.json());
+    app.use(helmet());
 
-  // Mount all API routes on /api path
-  app.use('/api', routes);
+    // Mount all API routes on /api path
+    app.use('/api', routes);
 
-  // Handle unexpected/uncaught errors
-  app.use(Api.handleUncaughtException);
-
-  // Log requests in dev environment
-  app.use(devRequestLogger);
+    // Log requests in dev environment
+    app.use(devRequestLogger);
+  } catch (exception) {
+    // Handle unexpected/uncaught errors
+    app.use((req: Request, res: Response) =>
+      Api.handleUncaughtException(exception, req, res),
+    );
+  }
 
   app.listen(PORT, () => {
     console.log(`🚀 Server ready at http://localhost:${PORT}`);

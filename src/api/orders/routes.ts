@@ -10,6 +10,6 @@ router.route('/').get(paramValidation.list, validateResults, methods.list);
 router
   .route('/:id')
   .get(paramValidation.getOrderById, validateResults, methods.getOrderById)
-  .post(paramValidation.update, validateResults, methods.update);
+  .put(paramValidation.update, validateResults, methods.update);
 
 export default router;

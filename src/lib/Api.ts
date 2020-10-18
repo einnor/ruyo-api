@@ -6,9 +6,7 @@ export default class Api {
     request: Request,
     response: Response,
     responseData: any,
-  ) {
-    response = response.status(httpStatus.INTERNAL_SERVER_ERROR);
-
+  ): Response {
     if (typeof responseData === 'string') {
       return response.json({
         error: responseData,
@@ -23,10 +21,14 @@ export default class Api {
       }
     }
 
-    return response.json(responseData);
+    return response.status(httpStatus.INTERNAL_SERVER_ERROR).json(responseData);
   }
 
-  static badRequest(request: Request, response: Response, responseData: any) {
+  static badRequest(
+    request: Request,
+    response: Response,
+    responseData: string | object,
+  ): Response {
     response.statusCode = httpStatus.BAD_REQUEST;
 
     if (typeof responseData === 'string') {
@@ -41,8 +43,8 @@ export default class Api {
   static unprocessableEntity(
     request: Request,
     response: Response,
-    responseData: any,
-  ) {
+    responseData: string | object,
+  ): Response {
     response.statusCode = httpStatus.UNPROCESSABLE_ENTITY;
 
     if (typeof responseData === 'string') {
@@ -58,7 +60,7 @@ export default class Api {
     error: Error,
     request: Request,
     response: Response,
-  ) {
+  ): Response {
     const errorMessage = error.toString();
 
     // Otherwise, return 500 (internal server error)

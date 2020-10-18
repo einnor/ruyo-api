@@ -21,14 +21,14 @@ export const list = async (req: Request, res: Response, next: NextFunction) => {
     await query.get().then((querySnapshot) => {
       const docs = querySnapshot.docs;
       for (let doc of docs) {
-        const item = {
+        const order = {
           id: doc.id,
           title: doc.data().title,
           bookingDate: doc.data().bookingDate,
           address: doc.data().address,
           customer: doc.data().customer,
         };
-        response.push(item);
+        response.push(order);
       }
     });
 
@@ -55,8 +55,8 @@ export const getOrderById = async (
 
     const db = DB.database.firestore();
     const document = db.collection('orders').doc(id);
-    const item = await document.get();
-    const response = item.data();
+    const order = await document.get();
+    const response = order.data();
 
     return res.status(httpStatus.OK).json(response);
   } catch (exception) {
@@ -71,18 +71,28 @@ export const update = async (
 ) => {
   const { id } = req.params;
   const { title, bookingDate } = req.body;
-  const data = {
-    id: '1',
-    title: 'Test',
-    bookingDate: '12/12/2020',
-    address: '86-10300, Kerugoya',
-    customer: 'John Doe',
-  };
+
+  const isBookingDateValid = new Date(bookingDate).getTime() > 0;
+  if (!isBookingDateValid) {
+    return Api.badRequest(req, res, 'An invalid booking date was provided.');
+  }
   try {
-    // TODO Update order and return response
-    return res
-      .status(httpStatus.CREATED)
-      .json({ data: { ...data, title, bookingDate } });
+    if (!DB.database) {
+      return Api.internalError(
+        req,
+        res,
+        'There was a problem connecting to the database.',
+      );
+    }
+
+    const db = DB.database.firestore();
+    const document = db.collection('orders').doc(id);
+    const order = await document.get();
+    const updatedOrder = { ...order.data(), title, bookingDate };
+    await document.update({
+      order: updatedOrder,
+    });
+    return res.status(httpStatus.CREATED).json(updatedOrder);
   } catch (exception) {
     return Api.internalError(req, res, exception);
   }
