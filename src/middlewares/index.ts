@@ -1,3 +1,4 @@
 import devRequestLogger from './devRequestLogger';
+import validateResults from './validateResults';
 
-export { devRequestLogger };
+export { devRequestLogger, validateResults };
