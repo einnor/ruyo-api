@@ -6,4 +6,4 @@ const router: Router = express.Router();
 
 router.use('/orders', orders);
 
-module.exports = router;
+export default router;
