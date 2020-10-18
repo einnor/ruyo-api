@@ -2,6 +2,28 @@ import httpStatus from 'http-status';
 import { Request, Response } from 'express';
 
 export default class Api {
+  static unauthorized(
+    request: Request,
+    response: Response,
+    responseData: any,
+  ): Response {
+    if (typeof responseData === 'string') {
+      return response.json({
+        error: responseData,
+      });
+    }
+    if (typeof responseData === 'object') {
+      const messageOrError = responseData['message'] || responseData['error'];
+      if (messageOrError) {
+        return response.json({
+          error: messageOrError,
+        });
+      }
+    }
+
+    return response.status(httpStatus.UNAUTHORIZED).json(responseData);
+  }
+
   static internalError(
     request: Request,
     response: Response,

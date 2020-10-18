@@ -11,7 +11,7 @@ const setDatabase = (req: Request & IDB, res: Response, next: NextFunction) => {
       'There was a problem connecting to the database.',
     );
   }
-  req.db = DB.database.firestore();
+  req.db = DB.database;
   return next();
 };
 

@@ -11,7 +11,7 @@ export const list = async (
   next: NextFunction,
 ) => {
   try {
-    const query = req.db.collection('orders');
+    const query = req.db.firestore().collection('orders');
     const response: Order[] = [];
     await query.get().then((querySnapshot) => {
       const docs = querySnapshot.docs;
@@ -40,7 +40,7 @@ export const getOrderById = async (
 ) => {
   const { id } = req.params;
   try {
-    const document = req.db.collection('orders').doc(id);
+    const document = req.db.firestore().collection('orders').doc(id);
     const order = await document.get();
     const response = order.data();
 
@@ -63,7 +63,7 @@ export const update = async (
     return Api.badRequest(req, res, 'An invalid booking date was provided.');
   }
   try {
-    const document = req.db.collection('orders').doc(id);
+    const document = req.db.firestore().collection('orders').doc(id);
     const order = await document.get();
     const updatedOrder = { ...order.data(), title, bookingDate };
     await document.update({
