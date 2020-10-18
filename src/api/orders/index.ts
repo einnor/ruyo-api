@@ -16,7 +16,6 @@ export const list = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const db = DB.database.firestore();
-
     const query = db.collection('orders');
     const response: Order[] = [];
     await query.get().then((querySnapshot) => {
@@ -46,16 +45,20 @@ export const getOrderById = async (
 ) => {
   const { id } = req.params;
   try {
-    // TODO Fetch order from firebase and return response
-    const data = {
-      id: '1',
-      title: 'Test',
-      bookingDate: '12/12/2020',
-      address: '86-10300, Kerugoya',
-      customer: 'John Doe',
-    };
-    return res.status(httpStatus.OK).json({ data });
-    return;
+    if (!DB.database) {
+      return Api.internalError(
+        req,
+        res,
+        'There was a problem connecting to the database.',
+      );
+    }
+
+    const db = DB.database.firestore();
+    const document = db.collection('orders').doc(id);
+    const item = await document.get();
+    const response = item.data();
+
+    return res.status(httpStatus.OK).json(response);
   } catch (exception) {
     return Api.internalError(req, res, exception);
   }

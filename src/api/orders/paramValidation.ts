@@ -17,8 +17,8 @@ export const getOrderById = [
   param('id')
     .exists()
     .withMessage('ID is missing from params')
-    .isUUID()
-    .withMessage('ID should be a uuid'),
+    .isAlphanumeric()
+    .withMessage('ID should be a alphanumeric'),
 ];
 
 export const update = [
@@ -30,8 +30,8 @@ export const update = [
   param('id')
     .exists()
     .withMessage('ID is missing from params')
-    .isUUID()
-    .withMessage('ID should be a uuid'),
+    .isAlphanumeric()
+    .withMessage('ID should be a alphanumeric'),
   body('title')
     .exists()
     .withMessage('Title is missing from the body')
@@ -40,6 +40,6 @@ export const update = [
   body('bookingDate')
     .exists()
     .withMessage('Booking date is missing from the body')
-    .isDate()
-    .withMessage('Booking date should be a date'),
+    .isNumeric()
+    .withMessage('Booking date should be a unix timestamp'),
 ];
