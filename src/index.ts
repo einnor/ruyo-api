@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import 'module-alias/register';
 
 /**
  * Load environment variables from local .env file.
@@ -9,6 +10,6 @@ dotenv.config();
 /**
  * Now load the main entry point and initialize.
  */
-import app from 'app';
+import app from './app';
 
 app();

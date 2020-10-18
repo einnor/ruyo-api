@@ -9,7 +9,7 @@ const validateResults = (req: Request, res: Response, next: NextFunction) => {
       .status(status.UNPROCESSABLE_ENTITY)
       .json({ errors: errors.array() });
   }
-  next();
+  return next();
 };
 
 export default validateResults;
