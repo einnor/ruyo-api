@@ -764,6 +764,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/console-stamp@^0.2.32":
+  version "0.2.32"
+  resolved "https://registry.yarnpkg.com/@types/console-stamp/-/console-stamp-0.2.32.tgz#9cb9dce41b6203a28486365300a8a1cf99e5801f"
+  integrity sha512-Ih8HUSWSNtmHf5DgLv+BZGKaNGZKOaFjkxb/nHOBfc2wLrWY5wFQq6rjLu+LxCD/Mc+8GoKhby364Bu0Be25tQ==
+
 "@types/cors@^2.8.8":
   version "2.8.8"
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.8.tgz#317a8d8561995c60e35b9e0fcaa8d36660c98092"
