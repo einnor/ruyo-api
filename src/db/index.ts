@@ -2,6 +2,7 @@ import FirebaseAdmin, { app, ServiceAccount } from 'firebase-admin';
 
 import { get } from 'config';
 import serviceAccount from 'config/serviceAccountKey.json';
+import Api from 'lib/Api';
 
 class Database {
   static database: app.App | null = null;

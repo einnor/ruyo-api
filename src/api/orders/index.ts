@@ -1,22 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
 
-import DB from 'db';
 import Api from 'lib/Api';
+import { IDB } from 'types';
 import { Order } from './types';
 
-export const list = async (req: Request, res: Response, next: NextFunction) => {
+export const list = async (
+  req: Request & IDB,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    if (!DB.database) {
-      return Api.internalError(
-        req,
-        res,
-        'There was a problem connecting to the database.',
-      );
-    }
-
-    const db = DB.database.firestore();
-    const query = db.collection('orders');
+    const query = req.db.collection('orders');
     const response: Order[] = [];
     await query.get().then((querySnapshot) => {
       const docs = querySnapshot.docs;
@@ -39,22 +34,13 @@ export const list = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const getOrderById = async (
-  req: Request,
+  req: Request & IDB,
   res: Response,
   next: NextFunction,
 ) => {
   const { id } = req.params;
   try {
-    if (!DB.database) {
-      return Api.internalError(
-        req,
-        res,
-        'There was a problem connecting to the database.',
-      );
-    }
-
-    const db = DB.database.firestore();
-    const document = db.collection('orders').doc(id);
+    const document = req.db.collection('orders').doc(id);
     const order = await document.get();
     const response = order.data();
 
@@ -65,7 +51,7 @@ export const getOrderById = async (
 };
 
 export const update = async (
-  req: Request,
+  req: Request & IDB,
   res: Response,
   next: NextFunction,
 ) => {
@@ -77,16 +63,7 @@ export const update = async (
     return Api.badRequest(req, res, 'An invalid booking date was provided.');
   }
   try {
-    if (!DB.database) {
-      return Api.internalError(
-        req,
-        res,
-        'There was a problem connecting to the database.',
-      );
-    }
-
-    const db = DB.database.firestore();
-    const document = db.collection('orders').doc(id);
+    const document = req.db.collection('orders').doc(id);
     const order = await document.get();
     const updatedOrder = { ...order.data(), title, bookingDate };
     await document.update({
