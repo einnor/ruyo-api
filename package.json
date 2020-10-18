@@ -52,6 +52,7 @@
     "api": "src/api",
     "app": "src/app",
     "config": "src/config",
+    "db": "src/db",
     "lib": "src/lib",
     "middlewares": "src/middlewares"
   }

@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 
 import { get } from 'config';
+import DB from 'db';
 import routes from 'api';
 import Api from 'lib/Api';
 import { devRequestLogger } from 'middlewares';
@@ -13,6 +14,9 @@ export default async () => {
   const PORT = get('PORT');
 
   const app = express();
+
+  // Initialize the database
+  DB.initializeDatabase();
 
   // Make sure the node log entries have timestamps
   consoleStamp(console, {
