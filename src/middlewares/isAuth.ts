@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import Api from 'lib/Api';
 import { IDB } from 'types';
 
-const isAuth = (req: Request & IDB, res: Response, next: NextFunction) => {
+const isAuth = async (
+  req: Request & IDB,
+  res: Response,
+  next: NextFunction,
+) => {
   const tokenWithBearer = req.headers.authorization || '';
   const token = tokenWithBearer.split(' ')[1];
 
@@ -10,7 +14,7 @@ const isAuth = (req: Request & IDB, res: Response, next: NextFunction) => {
     return Api.unauthorized(req, res, 'This request is unauthenticated.');
   }
 
-  req.db
+  await req.db
     .auth()
     .verifyIdToken(token)
     .then(function (decodedToken) {
