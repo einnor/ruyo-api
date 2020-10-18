@@ -6,16 +6,6 @@ export const list = [
     .withMessage('Authorization field is missing in the headers')
     .isString()
     .withMessage('Authorization header should be a string'),
-  query('perPage')
-    .optional()
-    .isInt()
-    .withMessage('perPage should be an integer')
-    .toInt(),
-  query('page')
-    .optional()
-    .isInt()
-    .withMessage('Page should be an integer')
-    .toInt(),
 ];
 
 export const getOrderById = [

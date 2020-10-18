@@ -13,8 +13,9 @@ class Database {
       ),
       databaseURL: get('FIREBASE_DATABASE_URL'),
     });
-    Database.database = database;
-    return database;
+    if (database) {
+      Database.database = database;
+    }
   };
 }
 
