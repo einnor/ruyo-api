@@ -3,7 +3,7 @@
  *
  * @param variable
  */
-export const get = (variable) => {
+export const get = (variable: string) => {
   const configValue = process.env[variable];
 
   if (typeof configValue !== 'string') {
