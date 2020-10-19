@@ -43,6 +43,9 @@ export const getOrderById = async (
     const document = req.db.firestore().collection('orders').doc(id);
     const order = await document.get();
     const response = order.data();
+    if (response) {
+      response.id = id;
+    }
 
     return res.status(httpStatus.OK).json(response);
   } catch (exception) {
@@ -69,7 +72,7 @@ export const update = async (
       title,
       bookingDate,
     });
-    const updatedOrder = { ...order.data(), title, bookingDate };
+    const updatedOrder = { ...order.data(), id, title, bookingDate };
     return res.status(httpStatus.CREATED).json(updatedOrder);
   } catch (exception) {
     return Api.internalError(req, res, exception);
