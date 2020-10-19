@@ -1,3 +1,5 @@
+# Ruyo API
+
 ## Getting Started
 
 - `git clone <REPO_NAME>`
