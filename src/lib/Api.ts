@@ -7,6 +7,7 @@ export default class Api {
     response: Response,
     responseData: any,
   ): Response {
+    response.statusCode = httpStatus.UNAUTHORIZED;
     if (typeof responseData === 'string') {
       return response.json({
         error: responseData,
@@ -21,7 +22,7 @@ export default class Api {
       }
     }
 
-    return response.status(httpStatus.UNAUTHORIZED).json(responseData);
+    return response.json(responseData);
   }
 
   static internalError(
